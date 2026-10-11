@@ -840,5 +840,5 @@ void loop() {
   if (!screenOff) {
     drawCurrentView();
   }
-  delay(screenOff ? 50 : 16);  // Smooth display updates without making the code complicated.
+  delay(screenOff ? 50 : 16);  // Smooth display updates without making the code complicated. (I hope)
 }
