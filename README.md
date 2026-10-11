@@ -3,8 +3,8 @@ Modified version of hack club's Starbie starter project
 
 
 # What I changed:
+<img width="948" height="776" alt="Screenshot 2026-10-11 at 7 13 52 PM" src="https://github.com/user-attachments/assets/28776c18-711d-463a-b5c8-c4ca43d9f505" />
 
-<img width="1086" height="909" alt="Screenshot 2026-10-10 at 6 38 16 PM" src="https://github.com/user-attachments/assets/b9465de9-cc2c-42a1-8dd8-555fb5919ebb" />
 
 
 - Changed shape from blocky to smooth and sharp
