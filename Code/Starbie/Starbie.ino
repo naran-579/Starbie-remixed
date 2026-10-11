@@ -31,6 +31,7 @@ const int DHT_PIN = 3;           // XIAO D1: DHT11 data
 const int BUTTON_ONE_PIN = 4;    // XIAO D2: opens/confirms the radial menu
 const int BUTTON_TWO_PIN = 5;    // XIAO D3: shows/hides stats
 const int BATTERY_PIN = 2;       // XIAO D0: middle of the battery divider
+const int LED_PIN = 10;          // XIAO D10: single-color status LED
 
 // Set this to false if your submission does not have a DHT11.
 const bool USE_DHT11 = true;
@@ -53,7 +54,9 @@ const float BATTERY_DIVIDER_RATIO = 3.13f;
 // batteries and the board is running from USB, so the battery icon is hidden.
 const float BATTERY_NO_BATTERY_V = 1.5f;
 const float BATTERY_LOW_V = 3.9f;        // pet gets drowsy and the icon blinks
-const float BATTERY_CRITICAL_V = 3.75f;  // stop saving to flash; nearly flat
+const float BATTERY_CRITICAL_V = 3.75f;  // save once, then show the warning screen
+const float BATTERY_RECOVERY_V = 0.10f;  // volts it must rise to leave critical
+const uint32_t WARNING_SNOOZE_MS = 60000;  // a button press hides the warning this long
 
 // Rough pack voltage to percent curve for 3 alkaline AAs. Change the numbers
 // if you use another battery type. Keep both lists in the same order.
@@ -61,6 +64,16 @@ const float BATTERY_CURVE_VOLTS[] = {3.60f, 3.75f, 3.90f, 4.20f, 4.50f};
 const int BATTERY_CURVE_PERCENT[] = {0, 10, 30, 70, 100};
 
 const uint16_t BATTERY_READ_INTERVAL_MS = 5000;
+
+// --- Status LED (one single-color LED) ------------------------------------
+// Wiring: LED_PIN -> resistor -> LED long leg (anode), LED short leg -> GND.
+// Set this to false if your build does not have the LED.
+const bool USE_LED = true;
+
+// --- Temperature reactions (needs the DHT11) ------------------------------
+const bool USE_TEMPERATURE_REACTIONS = true;
+const float HOT_TEMP_C = 28.0f;   // at or above this: sweat drops, triple LED blink
+const float COLD_TEMP_C = 18.0f;  // at or below this: shivering "brr", stuttering LED
 
 // --- Screen sleep (saves battery) -----------------------------------------
 // The screen dims, then turns off, when nothing has happened for a while. Any
@@ -258,8 +271,11 @@ uint32_t lastBatteryReadAt = 0;
 uint32_t lastActivityAt = 0;
 bool screenDimmed = false;
 bool screenOff = false;
+uint32_t warningSnoozedUntil = 0;
+bool warningWasActive = false;
 
 int petWalkingX(uint32_t now);
+void noteActivity();
 
 int keepInRange(int value, int smallest, int largest) {
   return constrain(value, smallest, largest);
@@ -281,13 +297,17 @@ void loadPet() {
   pet.fullness = preferences.getInt("full", STARTING_FULLNESS);
 }
 
-void savePet() {
-  if (batteryCritical) {
-    return;  // Skip flash writes when the batteries are nearly flat.
-  }
+void writePet() {
   preferences.putInt("joy", pet.joy);
   preferences.putInt("energy", pet.energy);
   preferences.putInt("full", pet.fullness);
+}
+
+void savePet() {
+  if (batteryCritical) {
+    return;  // Once critical, only updateWarningMode() writes to flash.
+  }
+  writePet();
 }
 
 void setUpButton(ButtonState &button) {
@@ -397,7 +417,15 @@ void updateBattery(bool forceRead) {
   batteryPresent = batteryVolts >= BATTERY_NO_BATTERY_V;
   batteryPercent = batteryPresent ? batteryPercentFromVolts(batteryVolts) : -1;
   batteryLow = batteryPresent && batteryVolts <= BATTERY_LOW_V;
-  batteryCritical = batteryPresent && batteryVolts <= BATTERY_CRITICAL_V;
+  const bool wasCritical = batteryCritical;
+  // Once critical, the voltage must rise a little before it counts as OK again.
+  batteryCritical = batteryPresent &&
+                    (batteryVolts <= BATTERY_CRITICAL_V ||
+                     (wasCritical && batteryVolts <= BATTERY_CRITICAL_V + BATTERY_RECOVERY_V));
+  if (batteryCritical && !wasCritical) {
+    warningSnoozedUntil = 0;
+    noteActivity();  // Wake the screen so the warning is seen.
+  }
 
   // Handy for calibrating the divider ratio against a multimeter.
   if (Serial) {
@@ -450,6 +478,28 @@ void updateIdleSleep() {
   }
 }
 
+bool isWarningActive() {
+  return batteryCritical && millis() >= warningSnoozedUntil;
+}
+
+// Saves the pet once each time the warning appears, including when it comes
+// back after a snooze. Normal saving stays paused while the battery is critical.
+void updateWarningMode() {
+  const bool active = isWarningActive();
+  if (active && !warningWasActive) {
+    writePet();
+  }
+  warningWasActive = active;
+}
+
+bool isHot() {
+  return USE_TEMPERATURE_REACTIONS && !isnan(temperatureC) && temperatureC >= HOT_TEMP_C;
+}
+
+bool isCold() {
+  return USE_TEMPERATURE_REACTIONS && !isnan(temperatureC) && temperatureC <= COLD_TEMP_C;
+}
+
 int petWalkingX(uint32_t now) {
   const int farthestX = SCREEN_WIDTH - PET_SPRITE_WIDTH;
   const uint32_t roundTrip = static_cast<uint32_t>(farthestX) * 2;
@@ -484,6 +534,49 @@ void updatePetTimers() {
   if (playRunStartedAt != 0 && !isPlaying()) {
     playRunStartedAt = 0;  // PLAY is exactly two left-to-right-to-left laps.
   }
+}
+
+// True when `phase` falls inside a blink that starts at `start` and lasts
+// `length` milliseconds.
+bool inBlink(uint32_t phase, uint32_t start, uint32_t length) {
+  return phase >= start && phase < start + length;
+}
+
+// One LED can only be on or off, so the pet's situation is shown as a blink
+// pattern. The first match wins.
+void updateLed() {
+  if (!USE_LED) {
+    return;
+  }
+  const uint32_t now = millis();
+  bool ledOn = false;
+
+  if (batteryCritical) {
+    ledOn = (now / 125) % 2 == 0;  // rapid blinking, even with the screen off
+  } else if (screenOff) {
+    ledOn = false;
+  } else if (batteryLow) {
+    const uint32_t phase = now % 2000;  // two blinks every 2 seconds
+    ledOn = inBlink(phase, 0, 100) || inBlink(phase, 250, 100);
+  } else if (isNapping()) {
+    ledOn = inBlink(now % 4000, 0, 80);  // one slow blink every 4 seconds
+  } else if (now < heartAnimationEndsAt) {
+    ledOn = true;  // solid while hearts float
+  } else if (isHot()) {
+    const uint32_t phase = now % 3000;  // three quick blinks every 3 seconds
+    ledOn = inBlink(phase, 0, 80) || inBlink(phase, 160, 80) || inBlink(phase, 320, 80);
+  } else if (isCold()) {
+    const uint32_t phase = now % 3000;  // shivering: a quick stutter every 3 seconds
+    ledOn = phase < 600 && (phase / 60) % 2 == 0;
+  } else if (pet.joy >= 60) {
+    ledOn = inBlink(now % 3000, 0, 80);  // happy: one blink every 3 seconds
+  } else if (pet.joy >= 30) {
+    ledOn = inBlink(now % 6000, 0, 80);  // okay: one blink every 6 seconds
+  } else {
+    ledOn = inBlink(now % 8000, 0, 400);  // sad: one long, slow glow
+  }
+
+  digitalWrite(LED_PIN, ledOn ? HIGH : LOW);
 }
 
 // While the menu is open, the MPU6050 acts like a tiny air mouse. The position
@@ -583,6 +676,10 @@ void handleButtons() {
     if (wakeScreen()) {
       return;  // The first press only wakes a sleeping screen.
     }
+    if (isWarningActive()) {
+      warningSnoozedUntil = millis() + WARNING_SNOOZE_MS;
+      return;  // A press hides the battery warning for a while.
+    }
     if (currentView == MENU_VIEW) {
       chooseMenuItem();
     } else {
@@ -593,6 +690,10 @@ void handleButtons() {
   if (wasPressed(buttonTwo)) {
     if (wakeScreen()) {
       return;  // The first press only wakes a sleeping screen.
+    }
+    if (isWarningActive()) {
+      warningSnoozedUntil = millis() + WARNING_SNOOZE_MS;
+      return;  // A press hides the battery warning for a while.
     }
     // Button 2 never changes the pet. It only lets you peek at the values.
     currentView = currentView == STATS_VIEW ? PET_VIEW : STATS_VIEW;
@@ -658,6 +759,28 @@ void drawBatteryIcon(int x, int y) {
   display.fillRect(x + 2, y + 2, map(batteryPercent, 0, 100, 0, 7), 3, SSD1306_WHITE);
 }
 
+void drawSweatDrop(int x, int y) {
+  display.drawPixel(x, y, SSD1306_WHITE);
+  display.fillRect(x - 1, y + 1, 3, 2, SSD1306_WHITE);
+}
+
+// Hot: sweat drops fall beside the head. Cold: the pet shivers and says brr.
+void drawTemperatureReaction(uint32_t now, int petX, int petY) {
+  if (isNapping()) {
+    return;
+  }
+  if (isHot()) {
+    const int fall = static_cast<int>((now / 120UL) % 10UL);
+    drawSweatDrop(petX + 4, petY + 3 + fall);
+    drawSweatDrop(petX + 26, petY + 8 + (fall + 5) % 10);
+  } else if (isCold()) {
+    display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE);
+    display.setCursor(constrain(petX + 2, 0, 108), petY - 8);
+    display.print("brr");
+  }
+}
+
 void drawPet() {
   display.clearDisplay();
 
@@ -671,6 +794,9 @@ void drawPet() {
   // The pet always wanders except during a nap; PLAY temporarily takes over.
   if (now < shakeAnimationEndsAt) {
     petX += static_cast<int>(sinf(now / 18.0f) * 3.0f);
+  }
+  if (isCold() && !isNapping()) {
+    petX += (now / 60) % 2 == 0 ? 1 : -1;  // shiver
   }
 
   if (!isNapping() && petJumpStartedAt != 0) {
@@ -698,6 +824,7 @@ void drawPet() {
     drawSleepZs(now, petX, petY);
   }
   drawHearts(now, petX, petY);
+  drawTemperatureReaction(now, petX, petY);
   drawBatteryIcon(SCREEN_WIDTH - 14, 1);
 }
 
@@ -775,8 +902,30 @@ void drawStats() {
   drawBatteryIcon(114, 53);
 }
 
+// Shown when the battery is critical. A button press hides it for a minute.
+void drawWarning() {
+  display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
+  if ((millis() / 500) % 2 == 0) {
+    display.drawRect(46, 3, 32, 18, SSD1306_WHITE);
+    display.fillRect(78, 8, 3, 8, SSD1306_WHITE);
+    display.setTextSize(2);
+    display.setCursor(56, 4);
+    display.print("!");
+  }
+  display.setTextSize(1);
+  display.setCursor(16, 28);
+  display.print("BATTERY CRITICAL");
+  display.setCursor(10, 40);
+  display.print("Pet progress saved");
+  display.setCursor(16, 52);
+  display.print("Change batteries");
+}
+
 void drawCurrentView() {
-  if (currentView == MENU_VIEW) {
+  if (isWarningActive()) {
+    drawWarning();
+  } else if (currentView == MENU_VIEW) {
     drawMenu();
   } else if (currentView == STATS_VIEW) {
     drawStats();
@@ -796,6 +945,10 @@ void setup() {
   if (USE_BATTERY_METER) {
     pinMode(BATTERY_PIN, INPUT);
     updateBattery(true);
+  }
+  if (USE_LED) {
+    pinMode(LED_PIN, OUTPUT);
+    digitalWrite(LED_PIN, LOW);
   }
   lastActivityAt = millis();
 
@@ -827,9 +980,11 @@ void loop() {
   updateMpu();
   updateDht();
   updateBattery(false);
+  updateWarningMode();
   updatePetTimers();
   handleButtons();
   updateIdleSleep();
+  updateLed();
 
   if (currentView == MENU_VIEW) {
     updateMenuBall();
@@ -840,5 +995,5 @@ void loop() {
   if (!screenOff) {
     drawCurrentView();
   }
-  delay(screenOff ? 50 : 16);  // Smooth display updates without making the code complicated. (I hope)
+  delay(screenOff ? 50 : 16);  // Smooth display updates without making the code complicated. (I hope :D)
 }
