@@ -1,6 +1,9 @@
 # Starbie remixed
 Modified version of hack club's Starbie starter project
 
+<img width="1051" height="812" alt="Screenshot 2026-10-11 at 7 36 55 PM" src="https://github.com/user-attachments/assets/64f87900-15a8-487c-ab77-5adaa40db568" />
+
+
 
 # What I changed:
 <img width="948" height="776" alt="Screenshot 2026-10-11 at 7 13 52 PM" src="https://github.com/user-attachments/assets/28776c18-711d-463a-b5c8-c4ca43d9f505" />
