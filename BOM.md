@@ -21,7 +21,7 @@
 | [Keyswitches](https://www.digikey.com/en/products/detail/cherry-americas-llc/MX2A-E1NA/21738437) | input | 2 | $1.75 | $3.50 | [Digikey](https://www.digikey.com/en/products/detail/cherry-americas-llc/MX2A-E1NA/21738437) |
 | [PCB](https://cart.jlcpcb.com/quote?quoteTab=standardPcb&_t=1791764704116&spm=Jlcpcb.Instantquote.1005&up_spm=Jlcpcb.Loginpage.1003) | Kinda everything | 1 | $14.30 | $14.30 | [JLPCB](https://cart.jlcpcb.com/quote?quoteTab=standardPcb&_t=1791764704116&spm=Jlcpcb.Instantquote.1005&up_spm=Jlcpcb.Loginpage.1003) |
 | **Parts subtotal** | — | — | — | **$32.51** | — |
-| **Tax & shipping** | — | — | — | **$0.00** | — |
-| **Total** | — | — | — | **$32.51** | — |
+| **Tax & shipping** | — | — | — | **$0.26** | — |
+| **Total** | — | — | — | **$32.77** | — |
 
-**$2.51 over the tier's funding.** Every tier gives a fixed amount for parts, so this needs cutting back or a higher tier.
+**$2.77 over the tier's funding.** Every tier gives a fixed amount for parts, so this needs cutting back or a higher tier.
