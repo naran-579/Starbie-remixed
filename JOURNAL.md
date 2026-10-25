@@ -4,7 +4,7 @@
 <!-- Generated: 2026-10-11T23:39:00.657Z -->
 
 > [!NOTE]
-> This devlog is mirrored from [Half Life](https://halflife.hackclub.com). Editing it here will not change the platform's copy, and the next sync overwrites this file.
+> This devlog is mirrored from [Half Life](https://halflife.hackclub.com) – [open the project](https://halflife.hackclub.com/projects/cmuw05omr03xk01osfwjdsf4c). Editing it here will not change the platform's copy, and the next sync overwrites this file.
 
 > A tiny motion-controlled digital pet, basically a desktop Tamagotchi. Totally not a Starboy.
 
@@ -30,18 +30,18 @@
 - Learnt how to make schematics and then PCBs in KiCAD (I made this way more confusing than it could have been)
 - Figured out how to use net labels in KiCAD, was pretty confused as to what exactly I was supposed to label
 
-![Screenshot 2026-10-06 at 8.52.08 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/eb6db2a0097de4ed466ae50edf4404eba744406f5d7f4363a09d852349b297a2.png)
+![Screenshot 2026-10-06 at 8.52.08 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/eb6db2a0097de4ed466ae50edf4404eba744406f5d7f4363a09d852349b297a2.png)
 ^ My use of the net labels (I may have switched SCL and SDA on accident)
 - Figured out how to wire something in KiCAD, also took me like an hour of trial and error until I figured out a better way to do it.
 - Learnt this platform, had to ask in the slack to figure out who to even get started on the Starbie, where I found out about the projects tab, where my projects lived (this should have been self-explanatory)
 
-![Screenshot 2026-10-06 at 8.40.09 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/e105dbd1b7e25bc2a108100019ea9b86e217bed545f51c8c2700e4bd1309ed49.png)
+![Screenshot 2026-10-06 at 8.40.09 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/e105dbd1b7e25bc2a108100019ea9b86e217bed545f51c8c2700e4bd1309ed49.png)
 
 ^ The Highly improvised and weird wiring solution I came up with
 
 - Started to figure out how the esp32 actually functions in Arduino IDE
 
-![Screenshot 2026-10-06 at 8.54.55 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/75664b206979ded5f62cb8db32d14441263a1a1d70ed4a443a8e38c71950f8d3.png)
+![Screenshot 2026-10-06 at 8.54.55 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/75664b206979ded5f62cb8db32d14441263a1a1d70ed4a443a8e38c71950f8d3.png)
 ^ A code snippet that I accidentally broke and spent way too long debugging
 
 - Figured out how to share the KiCAD schematics and PCB's in the Github Repo
@@ -52,7 +52,7 @@
 
 - Figured out how to use a MPU6050 in Arduino IDE by studying the code
 
-![Screenshot 2026-10-06 at 8.58.39 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/8eaf12faacfc3cb4b2dc2d662268ea9ca41af555ba21803e8c6fc6123a52383a.png)
+![Screenshot 2026-10-06 at 8.58.39 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/8eaf12faacfc3cb4b2dc2d662268ea9ca41af555ba21803e8c6fc6123a52383a.png)
 
 ^ the code snippet containing the code for the MPU6050
 
@@ -62,7 +62,7 @@
 - Found out that the Arduino IDE is a modified version of C++
 - Read the code.
 
-![Screenshot 2026-10-06 at 9.02.56 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/e079097013fee7e2b248f82460d9694ad72130c5338e906b25c2cab7e7c99c59.png)
+![Screenshot 2026-10-06 at 9.02.56 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/e079097013fee7e2b248f82460d9694ad72130c5338e906b25c2cab7e7c99c59.png)
 ^  The code snippets that draw the menu (at least I think so)
 
 ### 2026-10-10 – # Started making it "uniquely mine"
@@ -72,39 +72,39 @@
 # Started making it "uniquely mine"
 - Added a battery (3xAA)
 
-![Screenshot 2026-10-10 at 6.02.59 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/e968a07afc3a4a49b78b148df1a40297b4a9b32cd0576274bf0b461a5d3f42df.png)
+![Screenshot 2026-10-10 at 6.02.59 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/e968a07afc3a4a49b78b148df1a40297b4a9b32cd0576274bf0b461a5d3f42df.png)
 ^ the battery's footprint on the pcb
 
 - Added a way for the esp32 to (hopefully) sense the battery percentage
 
-![Screenshot 2026-10-10 at 6.07.24 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/d57aac891597327da80917b23e0a0f0b7e6e1f215c71430f0dbd0246f14ff331.png)
+![Screenshot 2026-10-10 at 6.07.24 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/d57aac891597327da80917b23e0a0f0b7e6e1f215c71430f0dbd0246f14ff331.png)
 ^ BAT_SENSE
 
 - Figured out how to use VIAs to make routing less of a headache (may or may not have already wasted an hour trying to figure that out)
 
-![Screenshot 2026-10-10 at 6.08.39 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/1e00610c234ae461ad3f8792aa3031cbe70732d6672ff991f462cee91a66c79f.png)
+![Screenshot 2026-10-10 at 6.08.39 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/1e00610c234ae461ad3f8792aa3031cbe70732d6672ff991f462cee91a66c79f.png)
 ^ on of my first successful attempts at a via
 
 - Figured out how to place footprints on both sides of the pcb because the battery was way too big to fit alongside the components
 
-![Screenshot 2026-10-10 at 6.10.02 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/ce3bbf8d0ea31c129a8cedb59939005ee8912259b6f64d5c39543ac6c3f2f349.png)
+![Screenshot 2026-10-10 at 6.10.02 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/ce3bbf8d0ea31c129a8cedb59939005ee8912259b6f64d5c39543ac6c3f2f349.png)
 ^ once again, the footprint of the battery
 
 - Spent way too much time routing the pcb before I discovered vias
 
-![Screenshot 2026-10-10 at 6.11.12 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/8ab8007953d092a1fe84fce3da68db9bcce74131cc722e44c84cbbad41e28e51.png)
+![Screenshot 2026-10-10 at 6.11.12 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/8ab8007953d092a1fe84fce3da68db9bcce74131cc722e44c84cbbad41e28e51.png)
 ^ the final routings (for now)
 - Attempted to add the battery health sensing functionality into the code
 
-![Screenshot 2026-10-10 at 6.16.14 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/8862fadfc2701b31a84da89d4d8ae68d06c59f1c44db0d4076358f27f9511703.png)
+![Screenshot 2026-10-10 at 6.16.14 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/8862fadfc2701b31a84da89d4d8ae68d06c59f1c44db0d4076358f27f9511703.png)
 ^ I have broken something here and have yet to figure out what exactly
 - Attempted to make the the energy value of the starbie be directly impacted by the battery levels
 
-![Screenshot 2026-10-10 at 6.25.15 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/ffe9c7b478c7a1471a619e4d821811110b45c432ae5f70c2829f70b73f6d3521.png)
+![Screenshot 2026-10-10 at 6.25.15 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/ffe9c7b478c7a1471a619e4d821811110b45c432ae5f70c2829f70b73f6d3521.png)
 ^ broke something here while trying to do that, had to look at the original to figure it out.
 - Added a battery system with some level of protection from things like electricity flowing back into the batteries
 
-![Screenshot 2026-10-10 at 6.38.16 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/a84bfcad5a9dce033cf7a8e1dca6274a11efd748eb571dce1bd0b6036149fc04.png)
+![Screenshot 2026-10-10 at 6.38.16 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/a84bfcad5a9dce033cf7a8e1dca6274a11efd748eb571dce1bd0b6036149fc04.png)
 ^ the whole pcb
 
 ### 2026-10-11 – # OCT 11, Added an LED, fixed code and got the repo ready to ship
@@ -115,35 +115,35 @@
 
 - Added an LED
 
-![Screenshot 2026-10-11 at 7.17.05 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/399c45d51305deb5f15833900c53235039116af54f8d4f6f716a32190697f294.png)
+![Screenshot 2026-10-11 at 7.17.05 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/399c45d51305deb5f15833900c53235039116af54f8d4f6f716a32190697f294.png)
 ^ The LED section on the schematic
 -  Got the repo ready to ship (Expanded the readme and ensured everything was up to date)
 
-![Screenshot 2026-10-11 at 7.21.28 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/80e8ac8322c3cef7878c18362686d985b9b34834082a0040ab177853b3509697.png)
+![Screenshot 2026-10-11 at 7.21.28 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/80e8ac8322c3cef7878c18362686d985b9b34834082a0040ab177853b3509697.png)
 ^ the part I added
 ## - updated the code to support
 - The battery
 
-![Screenshot 2026-10-11 at 7.31.08 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/4f0f1caa3fa0ee49a83e7035bc1bffd0eab27c9a9150f28763536486148fa727.png)
+![Screenshot 2026-10-11 at 7.31.08 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/4f0f1caa3fa0ee49a83e7035bc1bffd0eab27c9a9150f28763536486148fa727.png)
 ^ one of the code segments related to the battery (establishes the states)
 - The LED
-![Screenshot 2026-10-11 at 7.23.07 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/ee4607b23f819d3735ceb92c428390c8af57082afde5053e0256649fa8e2badb.png)
+![Screenshot 2026-10-11 at 7.23.07 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/ee4607b23f819d3735ceb92c428390c8af57082afde5053e0256649fa8e2badb.png)
 ^ a code segment related to the LED when the battery is critical.
 - A battery icon
-![Screenshot 2026-10-11 at 7.25.12 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/2b48f9158b1ba3e812efd55f3e16de985b7f1dc8a6801868c3d44e1aceb1f85e.png)
+![Screenshot 2026-10-11 at 7.25.12 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/2b48f9158b1ba3e812efd55f3e16de985b7f1dc8a6801868c3d44e1aceb1f85e.png)
 ^ a code segment related to the battery icon (draws it)
 - The Starbie more visibly affected by the temperature
 
-![Screenshot 2026-10-11 at 7.32.40 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/8b0ae4b6989ff11d9ae205118e6ecf9377a8bf3e7ceda6170c6bd2bc8ac3ba89.png)
+![Screenshot 2026-10-11 at 7.32.40 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/8b0ae4b6989ff11d9ae205118e6ecf9377a8bf3e7ceda6170c6bd2bc8ac3ba89.png)
 ^ Code segment that establishes the reaction thresholds
 
 ==========END SECTION ABOUT CODE =========
 
 - Modified the PCB to include the new LED
 
-![Screenshot 2026-10-11 at 7.35.20 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/86200665df546b5a4f411f7ee5a956dedac1aee6f5acc23609de9adc1cefe98e.png)
+![Screenshot 2026-10-11 at 7.35.20 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/86200665df546b5a4f411f7ee5a956dedac1aee6f5acc23609de9adc1cefe98e.png)
 ^ The LED in the PCB with it's resistor
 - Used KiCADs built-in 3D viewer to give more of a preview to the project
 
-![Screenshot 2026-10-11 at 7.36.55 PM](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/329563d8e7ae89a18bce938c4af2940f952d922eddacaeaf1504520184a9c0a0.png)
+![Screenshot 2026-10-11 at 7.36.55 PM](https://halflife.hackclub-assets.com/sessions/gNkPHeHGznptF1i3IfiQvYlXX9m4reaM/329563d8e7ae89a18bce938c4af2940f952d922eddacaeaf1504520184a9c0a0.png)
 ^ the screenshot used in the readme
